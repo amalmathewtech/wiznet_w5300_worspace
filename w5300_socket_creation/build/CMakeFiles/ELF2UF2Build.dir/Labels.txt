@@ -1,0 +1,13 @@
+# Target labels
+ ELF2UF2Build
+# Source files and their labels
+/home/amal/Desktop/w5300_send_tcp/build/CMakeFiles/ELF2UF2Build
+/home/amal/Desktop/w5300_send_tcp/build/CMakeFiles/ELF2UF2Build.rule
+/home/amal/Desktop/w5300_send_tcp/build/CMakeFiles/ELF2UF2Build-complete.rule
+/home/amal/Desktop/w5300_send_tcp/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-install.rule
+/home/amal/Desktop/w5300_send_tcp/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-mkdir.rule
+/home/amal/Desktop/w5300_send_tcp/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-download.rule
+/home/amal/Desktop/w5300_send_tcp/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-update.rule
+/home/amal/Desktop/w5300_send_tcp/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-patch.rule
+/home/amal/Desktop/w5300_send_tcp/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-configure.rule
+/home/amal/Desktop/w5300_send_tcp/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-build.rule
