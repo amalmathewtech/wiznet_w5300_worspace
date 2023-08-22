@@ -367,87 +367,6 @@ void W5300_check(void){
 }
 
 
-/* Internal memory operation */
- 
-uint8_t sysinit(uint8_t* tx_size, uint8_t* rx_size)
-{
-   uint16_t i;
-   uint16_t ssum=0,rsum=0;
-   unsigned int mem_cfg = 0;
-   
-   for(i=0; i < MAX_SOCK_NUM; i++)
-   {
-      if(tx_size[i] > 64)
-      {
-      #ifdef __DEF_IINCHIP_DBG__
-         printf("Illegal Channel(%d) TX Memory Size.\r\n",i);
-      #endif
-         return 0;
-      }
-      if(rx_size[i] > 64)
-      {
-      #ifdef __DEF_IINCHIP_DBG__         
-         printf("Illegal Channel(%d) RX Memory Size.\r\n",i);
-      #endif
-         return 0;
-      }
-      ssum += (uint16_t)tx_size[i];
-      rsum += (uint16_t)rx_size[i];
-      TXMEM_SIZE[i] = ((uint32_t)tx_size[i]) << 10;
-      RXMEM_SIZE[i] = ((uint32_t)rx_size[i]) << 10;
-   }
-   if( (ssum % 8) || ((ssum + rsum) != 128) )
-   {
-   #ifdef __DEF_IINCHIP_DBG__
-      printf("Illegal Memory Allocation\r\n");
-   #endif
-      return 0;
-   }
-   
-   IINCHIP_WRITE(TMSR0,tx_size[0]);
-   IINCHIP_WRITE(TMSR1,tx_size[1]);
-   IINCHIP_WRITE(TMSR2,tx_size[2]);
-   IINCHIP_WRITE(TMSR3,tx_size[3]);
-   IINCHIP_WRITE(TMSR4,tx_size[4]);
-   IINCHIP_WRITE(TMSR5,tx_size[5]);
-   IINCHIP_WRITE(TMSR6,tx_size[6]);
-   IINCHIP_WRITE(TMSR7,tx_size[7]);
-      
-   IINCHIP_WRITE(RMSR0,rx_size[0]);
-   IINCHIP_WRITE(RMSR1,rx_size[1]);
-   IINCHIP_WRITE(RMSR2,rx_size[2]);
-   IINCHIP_WRITE(RMSR3,rx_size[3]);
-   IINCHIP_WRITE(RMSR4,rx_size[4]);
-   IINCHIP_WRITE(RMSR5,rx_size[5]);
-   IINCHIP_WRITE(RMSR6,rx_size[6]);
-   IINCHIP_WRITE(RMSR7,rx_size[7]);
-   
-   for(i=0; i <ssum/8 ; i++)
-   {
-      mem_cfg <<= 1;
-      mem_cfg |= 1;
-   }
-   
-   IINCHIP_WRITE(MTYPER,(uint8_t)(mem_cfg >> 8));
-   IINCHIP_WRITE(MTYPER1,(uint8_t)(mem_cfg & 0xff));
-   
-   #ifdef __DEF_IINCHIP_DBG__
-      printf("Total TX Memory Size = %dKB\r\n",ssum);
-      printf("Total RX Memory Size = %dKB\r\n",rsum);
-      printf("Ch : TX SIZE : RECV SIZE\r\n");
-      printf("%02d : %07dKB : %07dKB \r\n", 0, IINCHIP_READ(TMSR0),IINCHIP_READ(RMSR0));
-      printf("%02d : %07dKB : %07dKB \r\n", 1, IINCHIP_READ(TMSR1),IINCHIP_READ(RMSR1));
-      printf("%02d : %07dKB : %07dKB \r\n", 2, IINCHIP_READ(TMSR2),IINCHIP_READ(RMSR2));
-      printf("%02d : %07dKB : %07dKB \r\n", 3, IINCHIP_READ(TMSR3),IINCHIP_READ(RMSR3));
-      printf("%02d : %07dKB : %07dKB \r\n", 4, IINCHIP_READ(TMSR4),IINCHIP_READ(RMSR4));
-      printf("%02d : %07dKB : %07dKB \r\n", 5, IINCHIP_READ(TMSR5),IINCHIP_READ(RMSR5));
-      printf("%02d : %07dKB : %07dKB \r\n", 6, IINCHIP_READ(TMSR6),IINCHIP_READ(RMSR6));
-      printf("%02d : %07dKB : %07dKB \r\n", 7, IINCHIP_READ(TMSR7),IINCHIP_READ(RMSR7));
-      printf("\r\nMTYPER=%02x%02x\r\n",IINCHIP_READ(MTYPER0),IINCHIP_READ(MTYPER1));
-   #endif
-   printf("test");
-   return 1;
-}
 
 
 
@@ -481,11 +400,26 @@ int main() {
      W5300_Config_Indirect_Mode();
      sleep_ms(1500);
      /* allocate internal TX/RX Memory of W5300 */
-	if(!sysinit(tx_mem_conf,rx_mem_conf))           
-	{
-		printf("MEMORY CONFIG ERR.\r\n");
-		while(1);
-	} 
+	W5300_Bus_Write_Indirect(TMSR0,0x08);
+	W5300_Bus_Write_Indirect(TMSR1,0x08);
+	W5300_Bus_Write_Indirect(TMSR2,0x08);
+    W5300_Bus_Write_Indirect(TMSR3,0x08);
+    W5300_Bus_Write_Indirect(TMSR4,0x08);
+    W5300_Bus_Write_Indirect(TMSR5,0x08);
+    W5300_Bus_Write_Indirect(TMSR6,0x08);
+    W5300_Bus_Write_Indirect(TMSR7,0x08);
+
+    W5300_Bus_Write_Indirect(RMSR0,0x08);
+    W5300_Bus_Write_Indirect(RMSR1,0x08);
+    W5300_Bus_Write_Indirect(RMSR2,0x08);
+    W5300_Bus_Write_Indirect(RMSR3,0x08);
+    W5300_Bus_Write_Indirect(RMSR4,0x08);
+    W5300_Bus_Write_Indirect(RMSR5,0x08);
+    W5300_Bus_Write_Indirect(RMSR6,0x08);
+    W5300_Bus_Write_Indirect(RMSR7,0x08);
+
+
+    W5300_Bus_Write_Indirect(MTYPER,0x0FF);  
     //setMR(getMR()| MR_FS);			// If Little-endian, set MR_FS.
 	sleep_ms(50);
     setSHAR(MAC);					// set source hardware address
