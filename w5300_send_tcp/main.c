@@ -445,6 +445,7 @@ uint8_t sysinit(uint8_t* tx_size, uint8_t* rx_size)
       printf("%02d : %07dKB : %07dKB \r\n", 7, IINCHIP_READ(TMSR7),IINCHIP_READ(RMSR7));
       printf("\r\nMTYPER=%02x%02x\r\n",IINCHIP_READ(MTYPER0),IINCHIP_READ(MTYPER1));
    #endif
+   printf("test");
    return 1;
 }
 
